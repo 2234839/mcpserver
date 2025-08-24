@@ -11,8 +11,9 @@ export function createErrorResponse(message: string) {
   };
 }
 
-export function createSuccessResponse(result: string) {
+export function createSuccessResponse(result: string | object) {
+  const text = typeof result === 'string' ? result : JSON.stringify(result, null, 2);
   return {
-    content: [{ type: 'text' as const, text: result }]
+    content: [{ type: 'text' as const, text }]
   };
 }

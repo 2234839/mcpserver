@@ -7,6 +7,8 @@ import { registerPollinationsImageGenerationTool } from './tools/pollinations/im
 import { registerPollinationsTextGenerationTool } from './tools/pollinations/text-generation.js';
 import { registerPollinationsAudioGenerationTool } from './tools/pollinations/audio-generation.js';
 import { registerPollinationsImageAnalysisTool } from './tools/pollinations/image-analysis.js';
+import { registerBlockKramdownTool, registerUpdateBlockTool } from './tools/siyuan/block-kramdown.js';
+import { registerSearchTool } from './tools/siyuan/search.js';
 
 const server = new McpServer({
   name: '崮生mcp工具箱',
@@ -21,6 +23,9 @@ registerPollinationsImageGenerationTool(server);
 registerPollinationsTextGenerationTool(server);
 registerPollinationsAudioGenerationTool(server);
 registerPollinationsImageAnalysisTool(server);
+registerBlockKramdownTool(server);
+registerUpdateBlockTool(server);
+registerSearchTool(server);
 
 async function main() {
   await server.connect(new StdioServerTransport());
