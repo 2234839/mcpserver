@@ -8,6 +8,7 @@ import { registerPollinationsTextGenerationTool } from './tools/pollinations/tex
 import { registerPollinationsAudioGenerationTool } from './tools/pollinations/audio-generation.js';
 import { registerPollinationsImageAnalysisTool } from './tools/pollinations/image-analysis.js';
 import { registerBlockKramdownTool, registerUpdateBlockTool } from './tools/siyuan/block-kramdown.js';
+import { registerSQLQueryTool } from './tools/siyuan/sql-query.js';
 import { registerSearchTool } from './tools/siyuan/search.js';
 
 const server = new McpServer({
@@ -25,6 +26,7 @@ registerPollinationsAudioGenerationTool(server);
 registerPollinationsImageAnalysisTool(server);
 registerBlockKramdownTool(server);
 registerUpdateBlockTool(server);
+registerSQLQueryTool(server);
 registerSearchTool(server);
 
 async function main() {
