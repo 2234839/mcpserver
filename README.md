@@ -69,6 +69,8 @@ SIYUAN_API_BASE=http://127.0.0.1:6806
 pnpm dev
 ```
 
+**注意**: 开发模式使用 `node --loader ts-node/esm` 运行，确保 ES 模块导入正常工作。
+
 ### 构建
 ```bash
 pnpm build
