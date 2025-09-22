@@ -49,6 +49,8 @@ Please visit [Zhipu AI Open Platform](https://open.bigmodel.cn/) to get your API
 pnpm dev
 ```
 
+**Note**: Development mode uses `node --loader ts-node/esm` to ensure ES module imports work correctly.
+
 ### Build
 
 ```bash

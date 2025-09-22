@@ -40,3 +40,7 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp
+
+# MCP configuration files (project-specific)
+.mcp.json
+.claude/
