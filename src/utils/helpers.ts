@@ -13,6 +13,12 @@ export interface EnvConfig {
   GLM_GENERATION_MODEL?: string;
   SIYUAN_API_TOKEN?: string;
   SIYUAN_API_BASE?: string;
+  PERPLEXITY_API_KEY?: string;
+  WEB_SEARCH_CACHE_TTL?: string;
+  WEB_SEARCH_RATE_LIMIT?: string;
+  WEB_SEARCH_RATE_WINDOW_MS?: string;
+  WEB_SEARCH_RETRY_AFTER_MS?: string;
+  WEB_SEARCH_TIMEOUT_MS?: string;
 }
 
 export function getEnv(): EnvConfig {

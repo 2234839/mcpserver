@@ -358,6 +358,47 @@ pnpm start
 - **-词** - 排除：明确排除
 - **(查询)** - 分组：组合逻辑
 
+#### siyuan_database_query - 数据库查询
+**参数：**
+- `stmt` (string): SQL 查询语句，例如: SELECT * FROM blocks WHERE type = 'av' LIMIT 10
+- `limit` (number, 可选): 限制返回结果的数量
+- `offset` (number, 可选): 偏移量，用于分页查询
+
+**示例：**
+```json
+{
+  "stmt": "SELECT * FROM blocks WHERE type = 'av'",
+  "limit": 10
+}
+```
+
+**高级查询示例：**
+```json
+{
+  "stmt": "SELECT b.id, b.content, a.name, a.value FROM blocks b JOIN attributes a ON b.id = a.block_id WHERE b.parent_id = '数据库块ID'",
+  "limit": 20,
+  "offset": 0
+}
+```
+
+#### siyuan_query_sql - SQL查询
+**参数：**
+- `stmt` (string): SQL 查询语句，例如: SELECT * FROM blocks WHERE content LIKE '%content%' LIMIT 7
+
+**示例：**
+```json
+{
+  "stmt": "SELECT * FROM blocks WHERE type = 'd' LIMIT 5"
+}
+```
+
+**高级查询示例：**
+```json
+{
+  "stmt": "SELECT distinct B.* from blocks as B join attributes as A on B.id = A.block_id where A.name like 'custom-dailynote-%' and B.type='d' and A.value >= '20231010' and A.value <= '20231013' order by A.value desc"
+}
+```
+
 ## 📝 日志系统
 
 项目包含完整的日志记录系统，所有工具调用都会记录到项目根目录的 `mcpserver.log` 文件中：

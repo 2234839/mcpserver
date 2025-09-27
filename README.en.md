@@ -169,6 +169,32 @@ Advanced web search with additional options.
 }
 ```
 
+### siyuan_database_query tool
+
+Query SiYuan note databases (tree views/attribute views) using SQLite syntax.
+
+**Parameters:**
+- `stmt` (string): SQL query statement, e.g.: SELECT * FROM blocks WHERE type = 'av' LIMIT 10
+- `limit` (number, optional): Limit the number of returned results
+- `offset` (number, optional): Offset for pagination queries
+
+**Example:**
+```json
+{
+  "stmt": "SELECT * FROM blocks WHERE type = 'av'",
+  "limit": 10
+}
+```
+
+**Advanced Query Example:**
+```json
+{
+  "stmt": "SELECT b.id, b.content, a.name, a.value FROM blocks b JOIN attributes a ON b.id = a.block_id WHERE b.parent_id = 'database-block-id'",
+  "limit": 20,
+  "offset": 0
+}
+```
+
 ## License
 
 ISC

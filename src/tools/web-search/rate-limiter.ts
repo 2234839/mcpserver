@@ -12,9 +12,10 @@ export class RateLimiter {
 
   constructor() {
     // Get rate limit from environment or use defaults
-    this.limit = parseInt(getEnv('WEB_SEARCH_RATE_LIMIT') || '5', 10);
-    this.windowMs = parseInt(getEnv('WEB_SEARCH_RATE_WINDOW_MS') || '1000', 10); // Default 1 second
-    this.retryAfterMs = parseInt(getEnv('WEB_SEARCH_RETRY_AFTER_MS') || '1000', 10); // Default 1 second
+    const env = getEnv();
+    this.limit = parseInt(env.WEB_SEARCH_RATE_LIMIT || '5', 10);
+    this.windowMs = parseInt(env.WEB_SEARCH_RATE_WINDOW_MS || '1000', 10); // Default 1 second
+    this.retryAfterMs = parseInt(env.WEB_SEARCH_RETRY_AFTER_MS || '1000', 10); // Default 1 second
 
     this.requests = [];
 

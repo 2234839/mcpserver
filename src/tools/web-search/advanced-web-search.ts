@@ -37,8 +37,8 @@ export async function performAdvancedWebSearch(params: AdvancedWebSearchInput) {
     const validatedParams = advancedWebSearchInputSchema.parse(params);
 
     // Check if required API keys are configured
-    const perplexityApiKey = getEnv('PERPLEXITY_API_KEY');
-    if (!perplexityApiKey) {
+    const env = getEnv();
+    if (!env.PERPLEXITY_API_KEY) {
       return createErrorResponse('PERPLEXITY_API_KEY is not configured in environment variables');
     }
 
@@ -77,7 +77,7 @@ export function registerAdvancedWebSearchTool(server: McpServer) {
   server.tool(
     'advanced_web_search',
     '在 web_search 的基础上，支持更复杂检索参数与结果整形；并可选启用 Sonar 直答（需要时才开）。',
-    advancedWebSearchInputSchema,
+    advancedWebSearchInputSchema.shape,
     async (params) => {
       return performAdvancedWebSearch(params);
     }

@@ -28,8 +28,8 @@ export async function performWebSearch(params: WebSearchInput) {
     const validatedParams = webSearchInputSchema.parse(params);
 
     // Check if Perplexity API key is configured
-    const apiKey = getEnv('PERPLEXITY_API_KEY');
-    if (!apiKey) {
+    const env = getEnv();
+    if (!env.PERPLEXITY_API_KEY) {
       return createErrorResponse('PERPLEXITY_API_KEY is not configured in environment variables');
     }
 
@@ -53,7 +53,7 @@ export function registerWebSearchTool(server: McpServer) {
   server.tool(
     'web_search',
     '快速检索并返回原始搜索结果（不做自动成文）。',
-    webSearchInputSchema,
+    webSearchInputSchema.shape,
     async (params) => {
       return performWebSearch(params);
     }

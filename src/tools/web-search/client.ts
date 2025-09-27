@@ -58,10 +58,11 @@ export async function searchWeb(params: SearchWebParams): Promise<SearchWebResul
     }
 
     // Get API key
-    const apiKey = getEnv('PERPLEXITY_API_KEY');
-    if (!apiKey) {
+    const env = getEnv();
+    if (!env.PERPLEXITY_API_KEY) {
       throw new Error('PERPLEXITY_API_KEY is not configured');
     }
+    const apiKey = env.PERPLEXITY_API_KEY;
 
     // Build query string
     let query = params.q;
@@ -165,7 +166,7 @@ export async function searchWeb(params: SearchWebParams): Promise<SearchWebResul
 async function makePerplexityRequest(apiKey: string, payload: any): Promise<any> {
   try {
     // Get timeout from environment or use default
-    const timeout = parseInt(getEnv('WEB_SEARCH_TIMEOUT_MS') || '10000', 10);
+    const timeout = parseInt(getEnv().WEB_SEARCH_TIMEOUT_MS || '10000', 10);
 
     // Make API request with timeout and retry
     const response = await withRetry(async () => {

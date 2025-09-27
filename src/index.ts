@@ -10,6 +10,7 @@ import { registerPollinationsImageAnalysisTool } from './tools/pollinations/imag
 import { registerBlockKramdownTool, registerUpdateBlockTool } from './tools/siyuan/block-kramdown.js';
 import { registerSQLQueryTool } from './tools/siyuan/sql-query.js';
 import { registerSearchTool } from './tools/siyuan/search.js';
+import { registerDatabaseQueryTool } from './tools/siyuan/database-query.js';
 import { registerWebSearchTool } from './tools/web-search/web-search.js';
 import { registerAdvancedWebSearchTool } from './tools/web-search/advanced-web-search.js';
 
@@ -30,6 +31,7 @@ registerBlockKramdownTool(server);
 registerUpdateBlockTool(server);
 registerSQLQueryTool(server);
 registerSearchTool(server);
+registerDatabaseQueryTool(server);
 registerWebSearchTool(server);
 registerAdvancedWebSearchTool(server);
 

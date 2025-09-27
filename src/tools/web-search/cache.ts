@@ -17,7 +17,8 @@ export class Cache {
 
   constructor() {
     this.cache = new Map<string, CacheEntry>();
-    this.defaultTtl = this.parseTtlFromEnv(getEnv('WEB_SEARCH_CACHE_TTL') || '30'); // Default 30 minutes
+    const env = getEnv();
+    this.defaultTtl = this.parseTtlFromEnv(env.WEB_SEARCH_CACHE_TTL || '30'); // Default 30 minutes
     this.startCleanupInterval();
   }
 

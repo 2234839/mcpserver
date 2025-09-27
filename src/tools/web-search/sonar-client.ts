@@ -40,10 +40,11 @@ export async function generateAnswerWithSonar(params: SonarSearchParams): Promis
     const searchResults = await searchWeb(params);
 
     // Get API key
-    const apiKey = getEnv('PERPLEXITY_API_KEY');
-    if (!apiKey) {
+    const env = getEnv();
+    if (!env.PERPLEXITY_API_KEY) {
       throw new Error('PERPLEXITY_API_KEY is not configured');
     }
+    const apiKey = env.PERPLEXITY_API_KEY;
 
     // Validate Sonar model
     if (!params.sonar_model) {
@@ -105,7 +106,7 @@ export async function generateAnswerWithSonar(params: SonarSearchParams): Promis
 async function makeSonarRequest(apiKey: string, payload: any): Promise<any> {
   try {
     // Get timeout from environment or use default
-    const timeout = parseInt(getEnv('WEB_SEARCH_TIMEOUT_MS') || '10000', 10);
+    const timeout = parseInt(getEnv().WEB_SEARCH_TIMEOUT_MS || '10000', 10);
 
     // Prepare request payload for Sonar API
     const sonarPayload = {
