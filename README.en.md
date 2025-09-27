@@ -25,17 +25,19 @@ pnpm install
 
 ### API Key Setup
 
-This project supports multiple ways to set GLM API Key, in priority order:
+This project supports multiple ways to set API Keys, in priority order:
 
 1. **System Environment Variables** (Recommended)
    ```bash
    export GLM_API_KEY=your_api_key_here
+   export PERPLEXITY_API_KEY=your_perplexity_api_key_here
    ```
 
 2. **.env file in execution directory**
    Create `.env` file in the directory where you run the command:
    ```
    GLM_API_KEY=your_api_key_here
+   PERPLEXITY_API_KEY=your_perplexity_api_key_here
    ```
 
 3. **.env file in project directory**
@@ -43,7 +45,19 @@ This project supports multiple ways to set GLM API Key, in priority order:
 
 ### Getting API Key
 
-Please visit [Zhipu AI Open Platform](https://open.bigmodel.cn/) to get your API Key.
+1. **Zhipu AI API Key**: Please visit [Zhipu AI Open Platform](https://open.bigmodel.cn/) to get your API Key.
+
+2. **Perplexity API Key**: Please visit [Perplexity AI](https://www.perplexity.ai/) to get your API Key. This is required for web search functionality.
+
+### Optional Configuration Variables
+
+For web search functionality, you can also configure the following environment variables:
+
+- `WEB_SEARCH_CACHE_TTL`: Search cache expiration time in minutes (default: 30)
+- `WEB_SEARCH_RATE_LIMIT`: Request rate limit per window (default: 5)
+- `WEB_SEARCH_RATE_WINDOW_MS`: Rate limit window in milliseconds (default: 60000)
+- `WEB_SEARCH_RETRY_AFTER_MS`: Retry wait time in milliseconds after rate limiting (default: 1000)
+- `WEB_SEARCH_TIMEOUT_MS`: API request timeout in milliseconds (default: 10000)
 
 ## Usage
 

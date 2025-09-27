@@ -51,6 +51,13 @@ pnpm install
 export GLM_API_KEY=your_glm_api_key_here
 ```
 
+#### Perplexity API Key (网络搜索工具必需)
+访问 [Perplexity AI](https://www.perplexity.ai/) 获取 API Key：
+
+```bash
+export PERPLEXITY_API_KEY=your_perplexity_api_key_here
+```
+
 #### 模型配置（可选）
 ```bash
 # GLM 模型配置
@@ -61,6 +68,13 @@ GLM_GENERATION_MODEL=cogview-3-flash
 # 思源笔记配置（可选）
 SIYUAN_API_TOKEN=your_siyuan_token
 SIYUAN_API_BASE=http://127.0.0.1:6806
+
+# 网络搜索配置（可选）
+WEB_SEARCH_CACHE_TTL=30
+WEB_SEARCH_RATE_LIMIT=5
+WEB_SEARCH_RATE_WINDOW_MS=60000
+WEB_SEARCH_RETRY_AFTER_MS=1000
+WEB_SEARCH_TIMEOUT_MS=10000
 ```
 
 ### 环境变量优先级
