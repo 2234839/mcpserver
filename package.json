@@ -1,7 +1,7 @@
 {
   "name": "mcpserver",
   "version": "1.0.0",
-  "description": "MCP server for image analysis using GLM-4.5V model",
+  "description": "A multi-modal AI toolkit based on Model Context Protocol (MCP), integrating Zhipu GLM, Pollinations.AI, SiYuan Notes, and Perplexity web search capabilities",
   "main": "build/index.js",
   "type": "module",
   "bin": {
@@ -14,9 +14,18 @@
   },
   "keywords": [
     "mcp",
+    "ai",
+    "glm",
+    "pollinations",
+    "siyuan",
+    "web-search",
     "image-analysis",
-    "glm-4.5v",
-    "ai"
+    "video-analysis",
+    "image-generation",
+    "text-generation",
+    "audio-generation",
+    "notes",
+    "multi-modal"
   ],
   "author": "",
   "license": "ISC",
