@@ -13,6 +13,12 @@ export interface EnvConfig {
   GLM_GENERATION_MODEL?: string;
   SIYUAN_API_TOKEN?: string;
   SIYUAN_API_BASE?: string;
+  PERPLEXITY_API_KEY?: string;
+  WEB_SEARCH_CACHE_TTL?: string;
+  WEB_SEARCH_RATE_LIMIT?: string;
+  WEB_SEARCH_RATE_WINDOW_MS?: string;
+  WEB_SEARCH_RETRY_AFTER_MS?: string;
+  WEB_SEARCH_TIMEOUT_MS?: string;
 }
 
 export function getEnv(): EnvConfig {
@@ -41,6 +47,12 @@ export function getEnv(): EnvConfig {
     GLM_GENERATION_MODEL: envConfig.GLM_GENERATION_MODEL,
     SIYUAN_API_TOKEN: envConfig.SIYUAN_API_TOKEN,
     SIYUAN_API_BASE: envConfig.SIYUAN_API_BASE || 'http://127.0.0.1:6806',
+    PERPLEXITY_API_KEY: envConfig.PERPLEXITY_API_KEY,
+    WEB_SEARCH_CACHE_TTL: envConfig.WEB_SEARCH_CACHE_TTL,
+    WEB_SEARCH_RATE_LIMIT: envConfig.WEB_SEARCH_RATE_LIMIT,
+    WEB_SEARCH_RATE_WINDOW_MS: envConfig.WEB_SEARCH_RATE_WINDOW_MS,
+    WEB_SEARCH_RETRY_AFTER_MS: envConfig.WEB_SEARCH_RETRY_AFTER_MS,
+    WEB_SEARCH_TIMEOUT_MS: envConfig.WEB_SEARCH_TIMEOUT_MS,
   };
 }
 

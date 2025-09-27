@@ -1,22 +1,31 @@
 {
   "name": "mcpserver",
   "version": "1.0.0",
-  "description": "MCP server for image analysis using GLM-4.5V model",
+  "description": "A multi-modal AI toolkit based on Model Context Protocol (MCP), integrating Zhipu GLM, Pollinations.AI, SiYuan Notes, and Perplexity web search capabilities",
   "main": "build/index.js",
   "type": "module",
   "bin": {
     "mcpserver": "./build/index.js"
   },
   "scripts": {
-    "build": "tsc && chmod 755 build/index.js",
+    "build": "tsc",
     "start": "node build/index.js",
-    "dev": "ts-node src/index.ts"
+    "dev": "node --loader ts-node/esm src/index.ts"
   },
   "keywords": [
     "mcp",
+    "ai",
+    "glm",
+    "pollinations",
+    "siyuan",
+    "web-search",
     "image-analysis",
-    "glm-4.5v",
-    "ai"
+    "video-analysis",
+    "image-generation",
+    "text-generation",
+    "audio-generation",
+    "notes",
+    "multi-modal"
   ],
   "author": "",
   "license": "ISC",
@@ -25,6 +34,7 @@
   ],
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.17.2",
+    "axios": "^1.12.2",
     "dotenv": "^16.4.5",
     "zod": "^3.25.76"
   },
@@ -32,5 +42,6 @@
     "@types/node": "^24.2.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.2"
-  }
+  },
+  "packageManager": "pnpm@10.15.1"
 }
