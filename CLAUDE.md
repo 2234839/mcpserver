@@ -2,7 +2,7 @@
 
 ## 项目概述
 
-这是一个基�?Model Context Protocol (MCP) 的多模�?AI 工具箱，集成了智�?GLM �?Pollinations.AI 两大平台的强大能力。项目采�?TypeScript 开发，提供图像分析、视频分析、图像生成、文本生成、音频生成等功能，并支持思源笔记集成�?
+这是一个基�?Model Context Protocol (MCP) 的多模�?AI 工具箱，集成了智�?GLM �?Pollinations.AI 两大平台的强大能力，以及基于 Perplexity API 的网络搜索功能。项目采�?TypeScript 开发，提供图像分析、视频分析、图像生成、文本生成、音频生成等功能，并支持思源笔记集成�?
 
 ## 技术栈
 
