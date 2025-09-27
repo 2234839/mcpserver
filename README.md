@@ -22,6 +22,12 @@
 - 🔍 **全文搜索** - 支持复杂查询语法的笔记搜索
 - ✏️ **内容更新** - 直接更新思源笔记块内容
 
+### 网络搜索
+- 🔍 **基础搜索** - 快速检索并返回原始搜索结果
+- 🧠 **智能搜索** - 使用 Sonar 模型生成答案并提供引用
+- 🛡️ **安全过滤** - 内置安全机制防止恶意内容
+- ⚡ **缓存加速** - 智能缓存提高重复查询响应速度
+
 ### 通用特性
 - 🔧 灵活的环境变量配置
 - 📝 完整的日志记录系统
@@ -211,6 +217,64 @@ pnpm start
   "image_path": "/path/to/image.jpg",
   "prompt": "What's in this image?",
   "model": "openai"
+}
+```
+
+### 网络搜索工具
+
+#### web_search - 网络搜索
+**参数：**
+- `q` (string): 搜索查询文本
+- `top_k` (number, 可选): 返回结果数量 (1-20, 默认: 10)
+- `time_range` (string, 可选): 时间范围 (any/day/week/month/year, 默认: any)
+- `site` (string, 可选): 限制搜索站点
+- `lang` (string, 可选): 搜索语言 (默认: zh)
+- `region` (string, 可选): 搜索区域 (默认: CN)
+- `safe_mode` (boolean, 可选): 安全搜索模式 (默认: true)
+- `include_snippets` (boolean, 可选): 包含摘要片段 (默认: true)
+
+**示例：**
+```json
+{
+  "q": "人工智能最新发展",
+  "top_k": 5,
+  "time_range": "month",
+  "lang": "zh",
+  "region": "CN"
+}
+```
+
+#### advanced_web_search - 高级网络搜索
+**参数：**
+- `q` (string): 搜索查询文本
+- `top_k` (number, 可选): 返回结果数量 (1-20, 默认: 10)
+- `time_range` (string, 可选): 时间范围 (any/day/week/month/year, 默认: any)
+- `site` (string, 可选): 限制搜索站点
+- `lang` (string, 可选): 搜索语言 (默认: zh)
+- `region` (string, 可选): 搜索区域 (默认: CN)
+- `safe_mode` (boolean, 可选): 安全搜索模式 (默认: true)
+- `include_snippets` (boolean, 可选): 包含摘要片段 (默认: true)
+- `operators` (array, 可选): 搜索操作符 (OR/AND)
+- `exclude_sites` (array, 可选): 排除站点列表
+- `from` (string, 可选): 起始日期 (YYYY-MM-DD)
+- `to` (string, 可选): 结束日期 (YYYY-MM-DD)
+- `dedupe` (string, 可选): 去重策略 (none/domain/title, 默认: none)
+- `aggregate` (boolean, 可选): 聚合相似结果
+- `engine` (string, 可选): 搜索引擎 (raw_search/sonar_answer)
+- `sonar_model` (string, 可选): Sonar模型 (sonar/sonar-pro/sonar-reasoning/sonar-reasoning-pro/sonar-deep-research)
+
+**示例：**
+```json
+{
+  "q": "机器学习研究论文",
+  "top_k": 10,
+  "time_range": "year",
+  "exclude_sites": ["example.com", "spam.com"],
+  "from": "2023-01-01",
+  "to": "2023-12-31",
+  "dedupe": "domain",
+  "engine": "sonar_answer",
+  "sonar_model": "sonar-reasoning-pro"
 }
 ```
 

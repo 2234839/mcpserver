@@ -10,6 +10,8 @@ import { registerPollinationsImageAnalysisTool } from './tools/pollinations/imag
 import { registerBlockKramdownTool, registerUpdateBlockTool } from './tools/siyuan/block-kramdown.js';
 import { registerSQLQueryTool } from './tools/siyuan/sql-query.js';
 import { registerSearchTool } from './tools/siyuan/search.js';
+import { registerWebSearchTool } from './tools/web-search/web-search.js';
+import { registerAdvancedWebSearchTool } from './tools/web-search/advanced-web-search.js';
 
 const server = new McpServer({
   name: '崮生mcp工具箱',
@@ -28,6 +30,8 @@ registerBlockKramdownTool(server);
 registerUpdateBlockTool(server);
 registerSQLQueryTool(server);
 registerSearchTool(server);
+registerWebSearchTool(server);
+registerAdvancedWebSearchTool(server);
 
 async function main() {
   await server.connect(new StdioServerTransport());
