@@ -1,8 +1,28 @@
-# 崮生mcp工具箱
+# Martin MCP工具箱
 
 [English README](README.en.md) | 中文说明
 
-一个基于 Model Context Protocol (MCP) 的多模态 AI 工具箱，集成了智谱 GLM 和 Pollinations.AI 两大平台的强大能力。
+一个基于 Model Context Protocol (MCP) 的多模态 AI 工具箱，集成了智谱 GLM、Pollinations.AI、思源笔记和 Perplexity 网络搜索四大平台的强大能力。
+
+## 🎯 为什么选择这个 MCP？
+
+在使用 **智谱 GLM 的 Claude Code 套餐**时，我发现了一个限制：
+
+* **Lite 版本**价格更低，但不支持 **图像/视频理解** 和 **联网搜索**；
+* 如果要获得这些能力，就必须升级到 **Pro（¥100/月）** 或 **Max（¥200/月）**；
+* 但对很多开发者来说，仅仅为了这两个功能升级套餐，成本偏高。
+
+我认为：
+
+* 如果没有图像/视频理解，大模型就**失去了"眼睛"**；
+* 如果没有联网搜索，大模型就**失去了"更新知识的能力"**；
+* 这让 Lite 版本几乎成了一个"闭门造车"的模型，无法满足日常需求。
+
+于是，我开发了这个 **MCP 插件**：
+
+* 即使只用 **GLM Lite 套餐**，配合这个 MCP，也能为 Claude Code **装上眼睛**（图像/视频理解）和 **搜索引擎**（联网搜索）；
+* 让 Lite 用户也能享受"最新知识 + 多模态理解"的体验；
+* 这大大提升了 Lite 套餐的性价比，也是我认为本项目最大的价值。
 
 ## 🚀 功能特性
 
@@ -21,6 +41,12 @@
 - 📚 **块级内容获取** - 获取思源笔记块的 Kramdown 源码
 - 🔍 **全文搜索** - 支持复杂查询语法的笔记搜索
 - ✏️ **内容更新** - 直接更新思源笔记块内容
+
+### 网络搜索
+- 🔍 **基础搜索** - 快速检索并返回原始搜索结果
+- 🧠 **智能搜索** - 使用 Sonar 模型生成答案并提供引用
+- 🛡️ **安全过滤** - 内置安全机制防止恶意内容
+- ⚡ **缓存加速** - 智能缓存提高重复查询响应速度
 
 ### 通用特性
 - 🔧 灵活的环境变量配置
@@ -45,6 +71,13 @@ pnpm install
 export GLM_API_KEY=your_glm_api_key_here
 ```
 
+#### Perplexity API Key (网络搜索工具必需)
+访问 [Perplexity AI](https://www.perplexity.ai/) 获取 API Key：
+
+```bash
+export PERPLEXITY_API_KEY=your_perplexity_api_key_here
+```
+
 #### 模型配置（可选）
 ```bash
 # GLM 模型配置
@@ -55,6 +88,13 @@ GLM_GENERATION_MODEL=cogview-3-flash
 # 思源笔记配置（可选）
 SIYUAN_API_TOKEN=your_siyuan_token
 SIYUAN_API_BASE=http://127.0.0.1:6806
+
+# 网络搜索配置（可选）
+WEB_SEARCH_CACHE_TTL=30
+WEB_SEARCH_RATE_LIMIT=5
+WEB_SEARCH_RATE_WINDOW_MS=60000
+WEB_SEARCH_RETRY_AFTER_MS=1000
+WEB_SEARCH_TIMEOUT_MS=10000
 ```
 
 ### 环境变量优先级
@@ -68,6 +108,8 @@ SIYUAN_API_BASE=http://127.0.0.1:6806
 ```bash
 pnpm dev
 ```
+
+**注意**: 开发模式使用 `node --loader ts-node/esm` 运行，确保 ES 模块导入正常工作。
 
 ### 构建
 ```bash
@@ -212,6 +254,64 @@ pnpm start
 }
 ```
 
+### 网络搜索工具
+
+#### web_search - 网络搜索
+**参数：**
+- `q` (string): 搜索查询文本
+- `top_k` (number, 可选): 返回结果数量 (1-20, 默认: 10)
+- `time_range` (string, 可选): 时间范围 (any/day/week/month/year, 默认: any)
+- `site` (string, 可选): 限制搜索站点
+- `lang` (string, 可选): 搜索语言 (默认: zh)
+- `region` (string, 可选): 搜索区域 (默认: CN)
+- `safe_mode` (boolean, 可选): 安全搜索模式 (默认: true)
+- `include_snippets` (boolean, 可选): 包含摘要片段 (默认: true)
+
+**示例：**
+```json
+{
+  "q": "人工智能最新发展",
+  "top_k": 5,
+  "time_range": "month",
+  "lang": "zh",
+  "region": "CN"
+}
+```
+
+#### advanced_web_search - 高级网络搜索
+**参数：**
+- `q` (string): 搜索查询文本
+- `top_k` (number, 可选): 返回结果数量 (1-20, 默认: 10)
+- `time_range` (string, 可选): 时间范围 (any/day/week/month/year, 默认: any)
+- `site` (string, 可选): 限制搜索站点
+- `lang` (string, 可选): 搜索语言 (默认: zh)
+- `region` (string, 可选): 搜索区域 (默认: CN)
+- `safe_mode` (boolean, 可选): 安全搜索模式 (默认: true)
+- `include_snippets` (boolean, 可选): 包含摘要片段 (默认: true)
+- `operators` (array, 可选): 搜索操作符 (OR/AND)
+- `exclude_sites` (array, 可选): 排除站点列表
+- `from` (string, 可选): 起始日期 (YYYY-MM-DD)
+- `to` (string, 可选): 结束日期 (YYYY-MM-DD)
+- `dedupe` (string, 可选): 去重策略 (none/domain/title, 默认: none)
+- `aggregate` (boolean, 可选): 聚合相似结果
+- `engine` (string, 可选): 搜索引擎 (raw_search/sonar_answer)
+- `sonar_model` (string, 可选): Sonar模型 (sonar/sonar-pro/sonar-reasoning/sonar-reasoning-pro/sonar-deep-research)
+
+**示例：**
+```json
+{
+  "q": "机器学习研究论文",
+  "top_k": 10,
+  "time_range": "year",
+  "exclude_sites": ["example.com", "spam.com"],
+  "from": "2023-01-01",
+  "to": "2023-12-31",
+  "dedupe": "domain",
+  "engine": "sonar_answer",
+  "sonar_model": "sonar-reasoning-pro"
+}
+```
+
 ### 思源笔记工具
 
 #### get_block_kramdown - 获取块级内容
@@ -278,6 +378,47 @@ pnpm start
 - **-词** - 排除：明确排除
 - **(查询)** - 分组：组合逻辑
 
+#### siyuan_database_query - 数据库查询
+**参数：**
+- `stmt` (string): SQL 查询语句，例如: SELECT * FROM blocks WHERE type = 'av' LIMIT 10
+- `limit` (number, 可选): 限制返回结果的数量
+- `offset` (number, 可选): 偏移量，用于分页查询
+
+**示例：**
+```json
+{
+  "stmt": "SELECT * FROM blocks WHERE type = 'av'",
+  "limit": 10
+}
+```
+
+**高级查询示例：**
+```json
+{
+  "stmt": "SELECT b.id, b.content, a.name, a.value FROM blocks b JOIN attributes a ON b.id = a.block_id WHERE b.parent_id = '数据库块ID'",
+  "limit": 20,
+  "offset": 0
+}
+```
+
+#### siyuan_query_sql - SQL查询
+**参数：**
+- `stmt` (string): SQL 查询语句，例如: SELECT * FROM blocks WHERE content LIKE '%content%' LIMIT 7
+
+**示例：**
+```json
+{
+  "stmt": "SELECT * FROM blocks WHERE type = 'd' LIMIT 5"
+}
+```
+
+**高级查询示例：**
+```json
+{
+  "stmt": "SELECT distinct B.* from blocks as B join attributes as A on B.id = A.block_id where A.name like 'custom-dailynote-%' and B.type='d' and A.value >= '20231010' and A.value <= '20231013' order by A.value desc"
+}
+```
+
 ## 📝 日志系统
 
 项目包含完整的日志记录系统，所有工具调用都会记录到项目根目录的 `mcpserver.log` 文件中：
@@ -292,27 +433,40 @@ pnpm start
 ```
 src/
 ├── config/
-│   ├── index.ts              # GLM 配置
-│   └── pollinations.ts       # Pollinations 配置
+│   ├── index.ts              # GLM 配置和默认参数
+│   └── pollinations.ts       # Pollinations.AI 配置
 ├── tools/
 │   ├── bigmodel/             # 智谱 GLM 工具
-│   │   ├── image-analysis.ts
-│   │   ├── video-analysis.ts
-│   │   └── image-generation.ts
+│   │   ├── image-analysis.ts     # 图片分析工具
+│   │   ├── video-analysis.ts     # 视频分析工具
+│   │   └── image-generation.ts   # 图片生成工具
 │   ├── pollinations/         # Pollinations.AI 工具
-│   │   ├── image-generation.ts
-│   │   ├── text-generation.ts
-│   │   ├── audio-generation.ts
-│   │   └── image-analysis.ts
-│   └── siyuan/              # 思源笔记工具
-│       ├── block-kramdown.ts
-│       ├── search.ts
-│       └── client.ts
+│   │   ├── image-generation.ts   # 图片生成工具
+│   │   ├── text-generation.ts    # 文本生成工具
+│   │   ├── audio-generation.ts   # 音频生成工具
+│   │   └── image-analysis.ts     # 图片分析工具
+│   ├── siyuan/              # 思源笔记工具
+│   │   ├── block-kramdown.ts     # 块级 Kramdown 获取工具
+│   │   ├── database-query.ts     # 数据库查询工具
+│   │   ├── sql-query.ts          # SQL 查询工具
+│   │   ├── search.ts             # 全文搜索工具
+│   │   ├── client.ts             # 思源 API 客户端
+│   │   └── index.ts              # 思源工具索引
+│   └── web-search/           # 网络搜索工具
+│       ├── web-search.ts         # 网络搜索工具实现
+│       ├── advanced-web-search.ts # 高级网络搜索工具实现
+│       ├── client.ts             # Perplexity API 客户端
+│       ├── sonar-client.ts       # Sonar 模型客户端
+│       ├── cache.ts              # 缓存实现
+│       ├── rate-limiter.ts       # 限速器实现
+│       ├── security.ts           # 安全工具
+│       ├── errors.ts             # 错误处理
+│       └── types.ts              # 类型定义
 ├── utils/
 │   ├── helpers.ts           # 通用助手函数
-│   ├── common.ts            # 通用响应函数
+│   ├── common.ts            # 响应格式化函数
 │   └── logger.ts            # 日志系统
-└── index.ts                 # 主服务器入口
+└── index.ts                 # 主服务器入口，工具注册
 ```
 
 ## 📄 许可证
@@ -326,3 +480,9 @@ ISC
 ## 📞 支持
 
 如有问题，请创建 Issue 或联系维护者。
+
+## 🙏 致谢
+
+本项目 fork 自 [2234839 崮生](https://github.com/2234839/mcpserver.git) 的项目，在此基础上进行了功能增强和扩展，已向原项目提交了 feature PR。
+
+感谢原作者的杰出工作！🎉

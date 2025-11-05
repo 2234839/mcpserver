@@ -1,8 +1,28 @@
-# 崮生 MCP 工具箱开发指南
+# Martin MCP 工具箱开发指南
 
 ## 项目概述
 
-这是一个基于 Model Context Protocol (MCP) 的多模态 AI 工具箱，集成了智谱 GLM 和 Pollinations.AI 两大平台的强大能力。项目采用 TypeScript 开发，提供图像分析、视频分析、图像生成、文本生成、音频生成等功能，并支持思源笔记集成。
+这是一个基于 Model Context Protocol (MCP) 的多模态 AI 工具箱，集成了智谱 GLM、Pollinations.AI、思源笔记和 Perplexity 网络搜索四大平台的强大能力。项目采用 TypeScript 开发，提供图像分析、视频分析、图像生成、文本生成、音频生成、网络搜索等功能，并支持思源笔记的完整集成。
+
+## 🎯 为什么选择这个 MCP？
+
+在使用 **智谱 GLM 的 Claude Code 套餐**时，我发现了一个限制：
+
+* **Lite 版本**价格更低，但不支持 **图像/视频理解** 和 **联网搜索**；
+* 如果要获得这些能力，就必须升级到 **Pro（¥100/月）** 或 **Max（¥200/月）**；
+* 但对很多开发者来说，仅仅为了这两个功能升级套餐，成本偏高。
+
+我认为：
+
+* 如果没有图像/视频理解，大模型就**失去了"眼睛"**；
+* 如果没有联网搜索，大模型就**失去了"更新知识的能力"**；
+* 这让 Lite 版本几乎成了一个"闭门造车"的模型，无法满足日常需求。
+
+于是，我开发了这个 **MCP 插件**：
+
+* 即使只用 **GLM Lite 套餐**，配合这个 MCP，也能为 Claude Code **装上眼睛**（图像/视频理解）和 **搜索引擎**（联网搜索）；
+* 让 Lite 用户也能享受"最新知识 + 多模态理解"的体验；
+* 这大大提升了 Lite 套餐的性价比，也是我认为本项目最大的价值。
 
 ## 技术栈
 
@@ -31,8 +51,22 @@ src/
 │   │   ├── text-generation.ts   # 文本生成工具
 │   │   ├── audio-generation.ts  # 音频生成工具
 │   │   └── image-analysis.ts    # 图片分析工具
-│   └── siyuan/            # 思源笔记工具
-│       └── block-kramdown.ts   # 块级 Kramdown 获取工具
+│   ├── siyuan/            # 思源笔记工具
+│   │   ├── block-kramdown.ts   # 块级 Kramdown 获取工具
+│   │   ├── database-query.ts   # 数据库查询工具
+│   │   ├── sql-query.ts        # SQL 查询工具
+│   │   ├── search.ts           # 全文搜索工具
+│   │   └── client.ts           # 思源 API 客户端
+│   └── web-search/        # 网络搜索工具
+│       ├── web-search.ts      # 网络搜索工具实现
+│       ├── advanced-web-search.ts # 高级网络搜索工具实现
+│       ├── client.ts          # Perplexity API 客户端
+│       ├── sonar-client.ts    # Sonar 模型客户端
+│       ├── cache.ts           # 缓存实现
+│       ├── rate-limiter.ts    # 限速器实现
+│       ├── security.ts        # 安全工具
+│       ├── errors.ts          # 错误处理
+│       └── types.ts           # 类型定义
 └── utils/
     ├── helpers.ts         # 通用助手函数
     ├── common.ts          # 响应格式化函数
@@ -63,6 +97,14 @@ GLM_GENERATION_MODEL=cogview-3-flash
 # 可选：思源笔记配置
 SIYUAN_API_TOKEN=your_siyuan_token
 SIYUAN_API_BASE=http://127.0.0.1:6806
+
+# 网络搜索配置（可选）
+PERPLEXITY_API_KEY=your_perplexity_api_key_here
+WEB_SEARCH_CACHE_TTL=30
+WEB_SEARCH_RATE_LIMIT=5
+WEB_SEARCH_RATE_WINDOW_MS=60000
+WEB_SEARCH_RETRY_AFTER_MS=1000
+WEB_SEARCH_TIMEOUT_MS=10000
 ```
 
 ### 3. 可用脚本
@@ -161,6 +203,14 @@ return createErrorResponse('Error message');
 ### 思源笔记工具
 
 1. **get_block_kramdown**: 获取思源笔记块的 Kramdown 源码
+2. **siyuan_database_query**: 查询思源笔记数据库（树形视图/属性视图）的工具
+3. **siyuan_query_sql**: 执行 SQL 查询语句的工具
+4. **siyuan_search_blocks**: 全文搜索思源笔记内容的工具
+
+### 网络搜索工具
+
+1. **web_search**: 基础网络搜索工具，使用 Perplexity API 获取原始搜索结果
+2. **advanced_web_search**: 高级网络搜索工具，支持更多参数和 Sonar 模型集成
 
 ## 开发规范
 
@@ -202,6 +252,12 @@ return createErrorResponse('Error message');
 - `GLM_GENERATION_MODEL`: 图像生成模型 (默认: cogview-4)
 - `SIYUAN_API_TOKEN`: 思源笔记 API 令牌
 - `SIYUAN_API_BASE`: 思源笔记 API 基础地址 (默认: http://127.0.0.1:6806)
+- `PERPLEXITY_API_KEY`: Perplexity API 密钥（网络搜索工具必需）
+- `WEB_SEARCH_CACHE_TTL`: 搜索缓存过期时间（分钟，默认: 30）
+- `WEB_SEARCH_RATE_LIMIT`: 请求频率限制（每窗口请求数，默认: 5）
+- `WEB_SEARCH_RATE_WINDOW_MS`: 频率限制窗口（毫秒，默认: 60000）
+- `WEB_SEARCH_RETRY_AFTER_MS`: 限速后重试等待时间（毫秒，默认: 1000）
+- `WEB_SEARCH_TIMEOUT_MS`: API 请求超时时间（毫秒，默认: 10000）
 
 ## 测试和调试
 
@@ -210,6 +266,8 @@ return createErrorResponse('Error message');
 ```bash
 pnpm dev
 ```
+
+**注意**: 开发模式使用 `node --loader ts-node/esm` 运行，确保 ES 模块导入正常工作。
 
 ### 2. 构建和运行
 
